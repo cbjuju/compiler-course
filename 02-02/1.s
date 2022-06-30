@@ -221,9 +221,8 @@ Object_protObj:
 	.word	-1
 Main_protObj:
 	.word	5
-	.word	4
+	.word	3
 	.word	Main_dispTab
-	.word	0
 	.word	-1
 String_protObj:
 	.word	4
@@ -278,10 +277,6 @@ Main_init:
 	addiu	$fp $sp 4
 	move	$s0 $a0
 	jal	Object_init
-	la	$a0 IO_protObj
-	jal	Object.copy
-	jal	IO_init
-	sw	$a0 12($s0)
 	move	$a0 $s0
 	lw	$fp 12($sp)
 	lw	$s0 8($sp)
@@ -354,10 +349,12 @@ Main.main:
 	la	$a0 str_const0
 	sw	$a0 0($sp)
 	addiu	$sp $sp -4
-	lw	$a0 12($s0)
+	la	$a0 IO_protObj
+	jal	Object.copy
+	jal	IO_init
 	bne	$a0 $zero label0
 	la	$a0 str_const1
-	li	$t1 4
+	li	$t1 3
 	jal	_dispatch_abort
 label0:
 	lw	$t1 8($a0)
