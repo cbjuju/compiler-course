@@ -4,6 +4,6 @@ class Main inherits A2I {
 	};
 
 	fact(i: Int): Int {
-		i+1
+		if (i = 0) then 1 else i * fact(i-1) fi
 	};
 };
