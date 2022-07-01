@@ -371,6 +371,7 @@ Main_dispTab:
 	.word	A2I.i2a
 	.word	A2I.i2a_aux
 	.word	Main.main
+	.word	Main.fact
 String_dispTab:
 	.word	Object.abort
 	.word	Object.type_name
@@ -1323,13 +1324,12 @@ label97:
 	addiu	$sp $sp 28
 	jr	$ra	
 Main.main:
-	addiu	$sp $sp -16
-	sw	$fp 16($sp)
-	sw	$s0 12($sp)
-	sw	$ra 8($sp)
+	addiu	$sp $sp -12
+	sw	$fp 12($sp)
+	sw	$s0 8($sp)
+	sw	$ra 4($sp)
 	addiu	$fp $sp 4
 	move	$s0 $a0
-	sw	$s1 0($fp)
 	la	$a0 str_const0
 	sw	$a0 0($sp)
 	addiu	$sp $sp -4
@@ -1355,13 +1355,6 @@ label103:
 	lw	$t1 8($a0)
 	lw	$t1 20($t1)
 	jalr		$t1
-	move	$s1 $a0
-	la	$a0 int_const0
-	jal	Object.copy
-	lw	$t2 12($a0)
-	lw	$t1 12($s1)
-	add	$t1 $t1 $t2
-	sw	$t1 12($a0)
 	sw	$a0 0($sp)
 	addiu	$sp $sp -4
 	move	$a0 $s0
@@ -1371,13 +1364,24 @@ label103:
 	jal	_dispatch_abort
 label104:
 	lw	$t1 8($a0)
-	lw	$t1 28($t1)
+	lw	$t1 40($t1)
 	jalr		$t1
+	sw	$a0 0($sp)
+	addiu	$sp $sp -4
+	move	$a0 $s0
 	bne	$a0 $zero label105
 	la	$a0 str_const1
 	li	$t1 3
 	jal	_dispatch_abort
 label105:
+	lw	$t1 8($a0)
+	lw	$t1 28($t1)
+	jalr		$t1
+	bne	$a0 $zero label106
+	la	$a0 str_const1
+	li	$t1 3
+	jal	_dispatch_abort
+label106:
 	lw	$t1 8($a0)
 	lw	$t1 16($t1)
 	jalr		$t1
@@ -1386,17 +1390,37 @@ label105:
 	la	$a0 IO_protObj
 	jal	Object.copy
 	jal	IO_init
-	bne	$a0 $zero label106
+	bne	$a0 $zero label107
 	la	$a0 str_const1
 	li	$t1 3
 	jal	_dispatch_abort
-label106:
+label107:
 	lw	$t1 8($a0)
 	lw	$t1 12($t1)
 	jalr		$t1
+	lw	$fp 12($sp)
+	lw	$s0 8($sp)
+	lw	$ra 4($sp)
+	addiu	$sp $sp 12
+	jr	$ra	
+Main.fact:
+	addiu	$sp $sp -16
+	sw	$fp 16($sp)
+	sw	$s0 12($sp)
+	sw	$ra 8($sp)
+	addiu	$fp $sp 4
+	move	$s0 $a0
+	sw	$s1 0($fp)
+	lw	$s1 16($fp)
+	la	$a0 int_const0
+	jal	Object.copy
+	lw	$t2 12($a0)
+	lw	$t1 12($s1)
+	add	$t1 $t1 $t2
+	sw	$t1 12($a0)
 	lw	$s1 0($fp)
 	lw	$fp 16($sp)
 	lw	$s0 12($sp)
 	lw	$ra 8($sp)
-	addiu	$sp $sp 16
+	addiu	$sp $sp 20
 	jr	$ra	
