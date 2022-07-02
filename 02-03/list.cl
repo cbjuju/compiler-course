@@ -1,9 +1,9 @@
-class List {
+class List inherits A2I {
 
-	item: String;
+	item: Object;
 	next: List;
 	
-	init(i: String, n: List): List {
+	init(i: Object, n: List): List {
 		{
 			item <- i;
 			next <- n;
@@ -12,11 +12,18 @@ class List {
 	};
 
         flatten(): String {
-        	if (isvoid next) then
-			item
-		else
-			item.concat(next.flatten())
-		fi
+		let string: String <-
+			case item of
+				i: Int => i2a(i);
+				s: String => s;
+				o: Object => {abort(); "";};
+			esac
+		in
+			if (isvoid next) then
+				string
+			else
+				string.concat(next.flatten())
+			fi
         };
 };
 
