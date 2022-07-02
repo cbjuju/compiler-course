@@ -4,6 +4,14 @@ class Main inherits A2I {
 	};
 
 	fact(i: Int): Int {
-		if (i = 0) then 1 else i * fact(i-1) fi
+		let fact: Int <- 1 in {
+			while (not (i = 0)) loop
+			{
+				fact <- fact * i ;
+				i <- i - 1;
+			}
+			pool;
+			fact;
+		}
 	};
 };
