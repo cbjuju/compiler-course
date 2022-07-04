@@ -15,7 +15,7 @@ class List inherits A2I {
 		let string: String <-
 			case item of
 				i: Int => i2a(i);
-				s: String => s;
+				s: String => {(new IO).out_string(s); s;};
 				o: Object => {abort(); "";};
 			esac
 		in
@@ -31,7 +31,7 @@ class Main inherits IO {
 
 	main(): Object {
 		let hello: String <- "Hello, ",
-		    world: String <- "World",
+		    world: String <- "boo",
 		    newline: String <- "\n",
 		    nil: List,
 		    list: List <- 
@@ -39,6 +39,6 @@ class Main inherits IO {
 		    (new List).init(world, 
 		    (new List).init(newline, nil)))
 		in
-			out_string(hello.concat(world.concat(newline)))
+			out_string("hooman\n")
 	};
 };
